@@ -76,8 +76,8 @@ class sentistrength:
         if booster_score !=0 and self.score<0: self.score -= booster_score
 
     def cek_consecutive_term(self, prev_term):
-        if self.prev_score>0 and self.score >=3: self.score+=1 
-        if self.prev_score<0 and self.score <=-3: self.score-=1 
+        if self.prev_score>0 and self.score >=3: self.score+=1
+        if self.prev_score<0 and self.score <=-3: self.score-=1
 
     def cek_ungkapan(self, bigram,trigram, i):
         bigram = ' '.join(bigram)
@@ -108,7 +108,7 @@ class sentistrength:
             if self.mean_conf:
                 mean_p = np.mean(self.mean_pos)
                 mean_n = np.mean(self.mean_neg)
-                print mean_p, mean_n
+                print(mean_p, mean_n)
                 if mean_p > mean_n:
                     result = "positive"
                 elif mean_p < mean_n and not self.is_tanya:
@@ -123,10 +123,10 @@ class sentistrength:
                 elif abs(self.sentences_max_pos) == abs(self.sentences_max_neg):
                     result = "neutral"
         except:
-            print "error ",self.sentences_max_pos, self.sentences_max_neg
+            print("error ",self.sentences_max_pos, self.sentences_max_neg)
         return result
     def cek_neutral_term(self,terms,i):
-        if terms[i-1] in self.neutral_term or terms[i+1] in self.neutral_term: self.score=1 
+        if terms[i-1] in self.neutral_term or terms[i+1] in self.neutral_term: self.score=1
 
     def main(self,sentence):
         self.neutral_term = ['jika','kalau']
@@ -196,15 +196,15 @@ class sentistrength:
                 if self.punctuation_conf and i>=0 and i<(terms_length-1): self.cek_repeated_punctuation(terms[i+1])
                 # CEK APAKAH TERDAPAT KATA TANYA
                 if self.question_conf and (term in self.tanya or re.search(r'\?',term)):self.is_tanya = True
-                # CEK neutral term 
+                # CEK neutral term
                 if self.score!=0 and i>1 and i<(terms_length-2): self.cek_neutral_term(terms,i)
                 # if self.score!=0 and i>0 and i<(terms_length-4): self.cek_neutral_term(terms,i)
                 if self.emoticon_conf and self.score==0: self.score = self.emosikon(term)
 
                 self.prev_score = self.score
-                if self.mean_conf and self.score>0: self.mean_pos.append(self.score)	
+                if self.mean_conf and self.score>0: self.mean_pos.append(self.score)
                 if self.mean_conf and self.score<0: self.mean_neg.append(abs(self.score))
-                #GET MAX SCORE +ve/-ve	
+                #GET MAX SCORE +ve/-ve
                 self.max_pos= self.score if self.score > self.max_pos else self.max_pos
                 self.max_neg= self.score if self.score < self.max_neg else self.max_neg
                 #insert score info current term
@@ -218,7 +218,7 @@ class sentistrength:
 
             self.sentences_text.append(self.sentence_text)
             self.sentences_score.append(" ".join(self.sentence_score))
-            if self.is_tanya: 
+            if self.is_tanya:
                 self.max_neg = -1
             self.sentences_max_pos = self.max_pos if self.max_pos > self.sentences_max_pos else self.sentences_max_pos
             self.sentences_max_neg = self.max_neg if self.max_neg < self.sentences_max_neg else self.sentences_max_neg
@@ -238,7 +238,7 @@ config["question"]  = True
 config["exclamation"]  = True
 config["punctuation"]  = True
 senti = sentistrength(config)
-print senti.main("agnezmo pintar dan cantik sekali tetapi lintah darat :)")
+print(senti.main("Dia pintar dan cantik sekali tetapi lintah darat :)"))
 
 
 
